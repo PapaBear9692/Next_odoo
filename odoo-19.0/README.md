@@ -18,7 +18,7 @@ source .venv/bin/activate
 First install C compilers
 ```
 sudo apt update
-sudo apt install libpq-dev python3-dev
+sudo apt install libpq-dev python3-dev libldap2-dev libsasl2-dev
 ```
 ---
 ```
