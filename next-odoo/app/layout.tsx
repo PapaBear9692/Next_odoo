@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Better Odoo - Modern ERP Frontend",
+  title: "Next-odoo - Modern ERP Frontend",
   description: "A complete headless Odoo experience built with Next.js 16",
 };
 

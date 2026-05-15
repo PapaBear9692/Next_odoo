@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Layers, ArrowRight, AlertCircle } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
@@ -10,7 +9,6 @@ import { Input } from "@/app/components/ui/input";
 import { login } from "@/app/lib/odoo/auth";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -22,8 +20,7 @@ export default function LoginPage() {
       const result = await login(formData);
 
       if (result.success) {
-        router.push("/apps");
-        router.refresh();
+        window.location.href = "/apps";
       } else {
         setError(result.error || "Invalid credentials");
       }
@@ -48,14 +45,14 @@ export default function LoginPage() {
 
         <div className="relative z-10"
         >
-          <Link href="/" className="flex items-center gap-2 text-white"
+          <Link href="/welcome" className="flex items-center gap-2 text-white"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20"
             >
               <Layers className="h-4 w-4" />
             </div>
             <span className="text-lg font-bold"
-            >Better Odoo</span>
+            >Next-odoo</span>
           </Link>
         </div>
 
@@ -89,14 +86,14 @@ export default function LoginPage() {
         >
           <div className="mb-8 lg:hidden"
           >
-            <Link href="/" className="flex items-center gap-2 text-zinc-900 dark:text-white"
+            <Link href="/welcome" className="flex items-center gap-2 text-zinc-900 dark:text-white"
             >
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white"
               >
                 <Layers className="h-4 w-4" />
               </div>
               <span className="text-lg font-bold"
-              >Better Odoo</span>
+              >Next-odoo</span>
             </Link>
           </div>
 

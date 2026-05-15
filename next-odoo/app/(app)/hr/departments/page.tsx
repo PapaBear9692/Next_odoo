@@ -9,6 +9,7 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
+  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
@@ -26,12 +27,14 @@ export default function DepartmentsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
 
     async function load() {
       setIsLoading(true);
+      setError(null);
       try {
         const domain: unknown[][] = [["active", "=", true]];
         if (searchQuery) {
@@ -60,8 +63,10 @@ export default function DepartmentsPage() {
           setDepartments(result.records);
           setTotalCount(result.length);
         }
-      } catch (error) {
-        console.error("Failed to fetch departments:", error);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Failed to fetch departments";
+        if (!cancelled) setError(message);
+        console.error("Failed to fetch departments:", err);
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -73,7 +78,7 @@ export default function DepartmentsPage() {
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
-  if (isLoading && departments.length === 0) {
+  if (isLoading && departments.length === 0 && !error) {
     return <PageLoader />;
   }
 
@@ -109,7 +114,17 @@ export default function DepartmentsPage() {
         </div>
       </Card>
 
-      {departments.length === 0 ? (
+      {error && (
+        <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-300">
+          <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
+          <div>
+            <p className="font-medium">Failed to load departments</p>
+            <p className="mt-1">{error}</p>
+          </div>
+        </div>
+      )}
+
+      {error ? null : departments.length === 0 ? (
         <EmptyState
           icon={<Building2 className="h-6 w-6" />}
           title="No departments found"

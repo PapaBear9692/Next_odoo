@@ -15,6 +15,7 @@ import {
   Briefcase,
   MapPin,
   Users,
+  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
@@ -35,12 +36,14 @@ export default function EmployeesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState<string>("all");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
 
     async function load() {
       setIsLoading(true);
+      setError(null);
       try {
         const domain: unknown[][] = [];
 
@@ -92,8 +95,10 @@ export default function EmployeesPage() {
           setEmployees(result.records);
           setTotalCount(result.length);
         }
-      } catch (error) {
-        console.error("Failed to fetch employees:", error);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Failed to fetch employees";
+        if (!cancelled) setError(message);
+        console.error("Failed to fetch employees:", err);
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -111,7 +116,7 @@ export default function EmployeesPage() {
     { id: "in_contract", label: "In Contract" },
   ];
 
-  if (isLoading && employees.length === 0) {
+  if (isLoading && employees.length === 0 && !error) {
     return <PageLoader />;
   }
 
@@ -171,8 +176,18 @@ export default function EmployeesPage() {
         </div>
       </Card>
 
+      {error && (
+        <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-300">
+          <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
+          <div>
+            <p className="font-medium">Failed to load employees</p>
+            <p className="mt-1">{error}</p>
+          </div>
+        </div>
+      )}
+
       {/* Employee Grid */}
-      {employees.length === 0 ? (
+      {error ? null : employees.length === 0 ? (
         <EmptyState
           icon={<Users className="h-6 w-6" />}
           title="No employees found"

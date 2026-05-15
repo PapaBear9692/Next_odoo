@@ -121,18 +121,17 @@ export default function AppsPage() {
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {apps.map((app, i) => {
-          const Component = app.available ? Link : "div";
-          return (
-            <motion.div
-              key={app.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
-            >
-              <Component
-                href={app.available ? app.path : "#"}
-                className={`block ${!app.available ? "cursor-not-allowed opacity-60" : "group"}`}
+        {apps.map((app, i) => (
+          <motion.div
+            key={app.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: i * 0.05 }}
+          >
+            {app.available ? (
+              <Link
+                href={app.path}
+                className="block group"
               >
                 <Card className="h-full transition-all hover:shadow-md">
                   <CardContent className="flex items-start gap-4 p-5">
@@ -148,18 +147,36 @@ export default function AppsPage() {
                       <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
                         {app.description}
                       </p>
-                      {!app.available && (
-                        <span className="mt-2 inline-block rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                          Coming soon
-                        </span>
-                      )}
                     </div>
                   </CardContent>
                 </Card>
-              </Component>
-            </motion.div>
-          );
-        })}
+              </Link>
+            ) : (
+              <div className="block cursor-not-allowed opacity-60">
+                <Card className="h-full transition-all">
+                  <CardContent className="flex items-start gap-4 p-5">
+                    <div
+                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${app.color} text-white shadow-sm`}
+                    >
+                      <app.icon className="h-6 w-6" />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="font-semibold text-zinc-900 dark:text-white">
+                        {app.name}
+                      </h3>
+                      <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
+                        {app.description}
+                      </p>
+                      <span className="mt-2 inline-block rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                        Coming soon
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </motion.div>
+        ))}
       </div>
     </div>
   );
