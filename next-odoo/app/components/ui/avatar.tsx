@@ -1,9 +1,11 @@
 import { cn } from "@/app/lib/utils";
+import type { ReactNode } from "react";
 
 interface AvatarProps {
   src?: string;
   alt?: string;
   fallback?: string;
+  icon?: ReactNode;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   className?: string;
 }
@@ -16,10 +18,20 @@ const sizeClasses = {
   xl: "h-16 w-16 text-lg",
 };
 
+function isValidImageSrc(src: string): boolean {
+  if (!src) return false;
+  if (src.startsWith("data:")) {
+    const base64Part = src.split(",")[1];
+    return !!base64Part && base64Part.length > 20 && base64Part !== "false";
+  }
+  return true;
+}
+
 export function Avatar({
   src,
   alt,
   fallback,
+  icon,
   size = "md",
   className,
 }: AvatarProps) {
@@ -55,7 +67,7 @@ export function Avatar({
       bgColors.length
     : 0;
 
-  if (src) {
+  if (isValidImageSrc(src || "")) {
     return (
       <img
         src={src}
@@ -74,12 +86,12 @@ export function Avatar({
       className={cn(
         "inline-flex items-center justify-center rounded-full font-medium text-white ring-2 ring-white dark:ring-zinc-800",
         sizeClasses[size],
-        bgColors[colorIndex],
+        icon ? "bg-zinc-200 text-zinc-500 dark:bg-zinc-700 dark:text-zinc-400" : bgColors[colorIndex],
         className
       )}
       title={alt || fallback}
     >
-      {initials}
+      {icon || initials}
     </div>
   );
 }

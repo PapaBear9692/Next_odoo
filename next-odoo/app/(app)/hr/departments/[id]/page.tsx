@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Building2, Users, Mail, Phone } from "lucide-react";
+import { ArrowLeft, Building2, Users, Mail, Phone, User } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Badge } from "@/app/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
@@ -137,6 +137,7 @@ export default function DepartmentDetailPage({ params }: DepartmentDetailPagePro
                       <Avatar
                         src={emp.avatar_128 ? `data:image/png;base64,${emp.avatar_128}` : undefined}
                         fallback={emp.name}
+                        icon={<User className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />}
                         size="sm"
                       />
                       <div className="min-w-0 flex-1">

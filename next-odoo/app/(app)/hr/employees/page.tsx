@@ -15,6 +15,7 @@ import {
   Briefcase,
   MapPin,
   Users,
+  User,
   AlertCircle,
 } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
@@ -218,6 +219,7 @@ export default function EmployeesPage() {
                                 : undefined
                             }
                             fallback={employee.name}
+                            icon={<User className="h-6 w-6 text-zinc-500 dark:text-zinc-400" />}
                             size="lg"
                           />
                           <div className="min-w-0">

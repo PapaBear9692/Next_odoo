@@ -119,6 +119,7 @@ export default function EmployeeDetailPage({ params }: EmployeeDetailPageProps) 
                     : undefined
               }
               fallback={employee.name}
+              icon={<User className="h-8 w-8 text-zinc-500 dark:text-zinc-400" />}
               size="xl"
             />
             <div>

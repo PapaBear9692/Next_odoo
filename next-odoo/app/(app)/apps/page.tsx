@@ -13,7 +13,7 @@ import {
   Calendar,
   Mail,
 } from "lucide-react";
-import { Card, CardContent } from "@/app/components/ui/card";
+import { Card } from "@/app/components/ui/card";
 
 const apps = [
   {
@@ -134,7 +134,7 @@ export default function AppsPage() {
                 className="block group"
               >
                 <Card className="h-full transition-all hover:shadow-md">
-                  <CardContent className="flex items-start gap-4 p-5">
+                  <div className="flex items-start gap-4 p-5">
                     <div
                       className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${app.color} text-white shadow-sm`}
                     >
@@ -148,13 +148,13 @@ export default function AppsPage() {
                         {app.description}
                       </p>
                     </div>
-                  </CardContent>
+                  </div>
                 </Card>
               </Link>
             ) : (
               <div className="block cursor-not-allowed opacity-60">
                 <Card className="h-full transition-all">
-                  <CardContent className="flex items-start gap-4 p-5">
+                  <div className="flex items-start gap-4 p-5">
                     <div
                       className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${app.color} text-white shadow-sm`}
                     >
@@ -171,7 +171,7 @@ export default function AppsPage() {
                         Coming soon
                       </span>
                     </div>
-                  </CardContent>
+                  </div>
                 </Card>
               </div>
             )}
