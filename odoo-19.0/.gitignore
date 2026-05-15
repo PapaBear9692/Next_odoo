@@ -46,9 +46,12 @@ package.json
 # various virtualenv
 /bin/
 /build/
-/dist/
 /include/
-/lib/
 /man/
 /share/
 /src/
+
+.python-version
+venv/
+env/
+ENV/
