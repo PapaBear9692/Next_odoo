@@ -141,6 +141,38 @@ export interface Job {
   contract_type_id?: [number, string];
 }
 
+export interface WorkLocation {
+  id: number;
+  name: string;
+  active: boolean;
+  company_id?: [number, string];
+  location_type?: string;
+  address_id?: [number, string];
+  location_number?: string;
+}
+
+export interface ContractType {
+  id: number;
+  name: string;
+  code?: string;
+  sequence?: number;
+  country_id?: [number, string];
+}
+
+export interface EmployeeCategory {
+  id: number;
+  name: string;
+  color?: number;
+  employee_ids?: number[];
+}
+
+export interface DepartureReason {
+  id: number;
+  name: string;
+  sequence?: number;
+  country_id?: [number, string];
+}
+
 export interface AppItem {
   id: string;
   name: string;

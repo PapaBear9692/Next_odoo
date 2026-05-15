@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Search,
@@ -19,6 +20,7 @@ import { PageLoader } from "@/app/components/ui/loading";
 import { EmptyState } from "@/app/components/ui/empty-state";
 import { odooSearchRead } from "@/app/lib/odoo/client";
 import type { Job } from "@/app/types/odoo";
+import JobForm from "./job-form";
 
 const PAGE_SIZE = 20;
 
@@ -29,6 +31,8 @@ export default function JobsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
+  const [formOpen, setFormOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -79,7 +83,7 @@ export default function JobsPage() {
 
     load();
     return () => { cancelled = true; };
-  }, [searchQuery, currentPage]);
+  }, [searchQuery, currentPage, refreshKey]);
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
@@ -98,7 +102,7 @@ export default function JobsPage() {
             {totalCount} positions
           </p>
         </div>
-        <Button size="sm" variant="secondary">
+        <Button size="sm" variant="secondary" onClick={() => setFormOpen(true)}>
           <Plus className="mr-1.5 h-4 w-4" />
           New Position
         </Button>
@@ -145,7 +149,8 @@ export default function JobsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2, delay: i * 0.05 }}
               >
-                <Card className="h-full p-5 transition-all hover:shadow-md">
+                <Link href={`/hr/jobs/${job.id}`}>
+                  <Card className="group h-full cursor-pointer p-5 transition-all hover:shadow-md hover:border-indigo-200 dark:hover:border-indigo-800">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400">
@@ -196,6 +201,7 @@ export default function JobsPage() {
                     </div>
                   )}
                 </Card>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -233,6 +239,14 @@ export default function JobsPage() {
           )}
         </>
       )}
+      <JobForm
+        open={formOpen}
+        onClose={() => setFormOpen(false)}
+        onSuccess={() => {
+          setCurrentPage(1);
+          setRefreshKey((k) => k + 1);
+        }}
+      />
     </div>
   );
 }

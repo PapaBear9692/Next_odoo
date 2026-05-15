@@ -19,6 +19,7 @@ import { PageLoader } from "@/app/components/ui/loading";
 import { EmptyState } from "@/app/components/ui/empty-state";
 import { odooRead } from "@/app/lib/odoo/client";
 import type { Employee } from "@/app/types/odoo";
+import EmployeeForm from "../employee-form";
 
 interface EmployeeDetailPageProps {
   params: Promise<{ id: string }>;
@@ -28,6 +29,8 @@ export default function EmployeeDetailPage({ params }: EmployeeDetailPageProps) 
   const [employee, setEmployee] = useState<Employee | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("work");
+  const [formOpen, setFormOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -65,7 +68,7 @@ export default function EmployeeDetailPage({ params }: EmployeeDetailPageProps) 
 
     load();
     return () => { cancelled = true; };
-  }, [params]);
+  }, [params, refreshKey]);
 
   if (isLoading) {
     return <PageLoader />;
@@ -151,7 +154,7 @@ export default function EmployeeDetailPage({ params }: EmployeeDetailPageProps) 
               </div>
             </div>
           </div>
-          <Button variant="secondary" size="sm">
+          <Button variant="secondary" size="sm" onClick={() => setFormOpen(true)}>
             Edit
           </Button>
         </div>
@@ -605,6 +608,15 @@ export default function EmployeeDetailPage({ params }: EmployeeDetailPageProps) 
           </Card>
         </div>
       )}
+
+      <EmployeeForm
+        open={formOpen}
+        onClose={() => setFormOpen(false)}
+        employee={employee}
+        onSuccess={() => {
+          setRefreshKey((k) => k + 1);
+        }}
+      />
     </div>
   );
 }

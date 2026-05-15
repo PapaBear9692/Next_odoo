@@ -3,12 +3,24 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/app/lib/utils";
-import { Users, Building2, Briefcase } from "lucide-react";
+import {
+  Users,
+  Building2,
+  Briefcase,
+  MapPin,
+  FileText,
+  Tag,
+  LogOut,
+} from "lucide-react";
 
 const hrNavItems = [
   { name: "Employees", href: "/hr/employees", icon: Users },
   { name: "Departments", href: "/hr/departments", icon: Building2 },
   { name: "Jobs", href: "/hr/jobs", icon: Briefcase },
+  { name: "Work Locations", href: "/hr/work-locations", icon: MapPin },
+  { name: "Contract Types", href: "/hr/contract-types", icon: FileText },
+  { name: "Tags", href: "/hr/categories", icon: Tag },
+  { name: "Departure Reasons", href: "/hr/departure-reasons", icon: LogOut },
 ];
 
 export default function HrLayout({ children }: { children: React.ReactNode }) {

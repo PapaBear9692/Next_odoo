@@ -26,6 +26,7 @@ import { EmptyState } from "@/app/components/ui/empty-state";
 import { Card } from "@/app/components/ui/card";
 import { odooSearchRead } from "@/app/lib/odoo/client";
 import type { Employee } from "@/app/types/odoo";
+import EmployeeForm from "./employee-form";
 
 const PAGE_SIZE = 20;
 
@@ -37,6 +38,8 @@ export default function EmployeesPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState<string>("all");
   const [error, setError] = useState<string | null>(null);
+  const [formOpen, setFormOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -106,7 +109,7 @@ export default function EmployeesPage() {
 
     load();
     return () => { cancelled = true; };
-  }, [searchQuery, currentPage, filter]);
+  }, [searchQuery, currentPage, filter, refreshKey]);
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
@@ -132,7 +135,7 @@ export default function EmployeesPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Button size="sm" variant="secondary">
+          <Button size="sm" variant="secondary" onClick={() => setFormOpen(true)}>
             <Plus className="mr-1.5 h-4 w-4" />
             New Employee
           </Button>
@@ -314,6 +317,14 @@ export default function EmployeesPage() {
           )}
         </>
       )}
+      <EmployeeForm
+        open={formOpen}
+        onClose={() => setFormOpen(false)}
+        onSuccess={() => {
+          setCurrentPage(1);
+          setRefreshKey((k) => k + 1);
+        }}
+      />
     </div>
   );
 }
