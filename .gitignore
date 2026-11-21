@@ -219,3 +219,33 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Git ignoring odoo source code
+backend/addons
+backend/odoo
+backend/doc
+backend/setup
+backend/debian
+backend/.weblate.json
+backend/CONTRIBUTING.md
+backend/COPYRIGHT
+backend/LICENSE
+backend/MANIFEST.in
+backend/odoo-bin
+backend/README.md
+backend/requirements.txt
+backend/ruff.toml
+backend/SECURITY.md
+backend/setup.cfg
+backend/setup.py
+backend/venv
+backend/env
+backend/.venv
+
+
+# Git ignoreing frontend node modules
+frontend/node_modules
+frontend/.env.local
+frontend/.env
+frontend/env.local
+frontend/env
